@@ -1,0 +1,4 @@
+Starting audit...
+[ERROR] F:\recyle bin\MSIT\ads-2\m3\3.2 Bipartite\Stack.java:0: File does not end with a newline. [NewlineAtEndOfFile]
+Audit done.
+Checkstyle ends with 1 errors.
