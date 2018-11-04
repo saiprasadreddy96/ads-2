@@ -48,7 +48,7 @@ public class Solution {
 		for (int i = 0; i < v; i++) {
 			pr[i] = d;
 		}
-		for (int i = 1; i <= 1; i++) {
+		for (int i = 1; i <= 1000; i++) {
 			for (int j = 0; j < v; j++) {
 				//Iterable<Integer> invertices = graph2.adj(j);
 				pr[j] = 0.0;
