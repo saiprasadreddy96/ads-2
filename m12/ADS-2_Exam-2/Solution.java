@@ -59,7 +59,8 @@ public class Solution {
 			DijkstraUndirectedSP d1 = new DijkstraUndirectedSP(eg, Integer.parseInt(str3[0]));
 			DijkstraUndirectedSP d2 = new DijkstraUndirectedSP(eg, Integer.parseInt(str3[1]));
 			if(d1.hasPathTo(Integer.parseInt(str3[1]))&&d2.hasPathTo(Integer.parseInt(str3[2]))){
-				System.out.println(d1.pathTo(Integer.parseInt(str3[1]))+" "+d2.pathTo(Integer.parseInt(str3[2])));
+				System.out.println(d1.distTo(Integer.parseInt(str3[1])) + d2.distTo(Integer.parseInt(str3[2])));
+				System.out.println(d1.pathTo(Integer.parseInt(str3[1]))+""+d2.pathTo(Integer.parseInt(str3[2])) + "" + Integer.parseInt(str3[2]));
 			} else{
 				System.out.println("No Path Found.");
 			}
