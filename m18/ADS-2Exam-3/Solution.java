@@ -28,6 +28,13 @@ public class Solution {
 			// 	// 	System.out.println(each);
 			// 	// }
 			// }
+			while (scan.hasNextLine()) {
+				String prefix = scan.nextLine();
+				for (String each : t9.getAllWords(prefix)) {
+					System.out.println(each);
+				}
+			}
+
 			break;
 
 		case "potentialWords":
@@ -107,32 +114,24 @@ public class Solution {
 
 class T9 {
 
+	private TST tst;
+	private BinarySearchST<String, Integer> bst;
+
 	public T9(BinarySearchST<String, Integer> st) {
-
 		// your code goes here
-		TST<Integer> tst = new TST<Integer>();
-
-        for (String str : st.keys()) {
-            tst.put(str, st.get(str));
-        }
-        Scanner scan = new Scanner(System.in);
-        while (scan.hasNextLine()) {
-				String prefix = scan.nextLine();
-				for (String str : tst.keysWithPrefix(prefix)) {
-            		System.out.println(str);
-        		}
+		tst = new TST();
+		this.bst = st;
+		for (String word : st.keys()) {
+			tst.put(word, st.get(word));
 		}
+
 	}
 
 	// get all the prefixes that match with given prefix.
-	// public void getAllWords(String prefix) {
-	// 	// your code goes here
-	// 	//String line = sc.nextLine();
- //        for (String str : tst.keysWithPrefix(prefix)) {
- //            System.out.println(str);
- //        }
-	// 	return;
-	// }
+	public Iterable<String> getAllWords(String prefix) {
+		// your code goes here
+		return tst.keysWithPrefix(prefix);
+}
 
 	public Iterable<String> potentialWords(String t9Signature) {
 		// your code goes here

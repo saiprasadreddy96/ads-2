@@ -18,7 +18,7 @@ Your Output:
 47
 149
 ----------------------------------------
-########## Testcase 1: Failed ##########
+########## Testcase 1: Passed ##########
 Expected Output: 
 wont
 working
@@ -54,7 +54,39 @@ messages
 messagesome
 going
 Your Output: 
-
+wont
+working
+what
+whatever
+whats
+whatsup
+vegetables
+too
+took
+tookplace
+tool
+toolets
+tooo
+toopray
+toot
+toothpaste
+tootsie
+over
+overa
+overdid
+overdose
+overemphasiseor
+overheating
+overtime
+message
+messaged
+messageit
+messageits
+messageno
+messagepandy
+messages
+messagesome
+going
 ----------------------------------------
 ########## Testcase 2: Failed ##########
 Expected Output: 
@@ -121,7 +153,7 @@ fine
 seeking
 Your Output: 
 Exception in thread "main" java.lang.NullPointerException
-	at Solution.main(Solution.java:39)
+	at Solution.main(Solution.java:46)
 ----------------------------------------
 ########## Testcase 3: Failed ##########
 Expected Output: 
@@ -131,7 +163,7 @@ right
 words
 Your Output: 
 Exception in thread "main" java.lang.NullPointerException
-	at Solution.main(Solution.java:58)
+	at Solution.main(Solution.java:65)
 ----------------------------------------
 ########## Testcase 4: Failed ##########
 Expected Output: 
@@ -182,5 +214,5 @@ paper
 keep
 Your Output: 
 Exception in thread "main" java.lang.NullPointerException
-	at Solution.main(Solution.java:71)
+	at Solution.main(Solution.java:78)
 ----------------------------------------
