@@ -113,7 +113,7 @@ class T9 {
 		TST<Integer> tst = new TST<Integer>();
 
         for (String str : st.keys()) {
-            SuffixArray sfax = new SuffixArray(str, tst);
+            tst.put(str, st.get(str));
         }
         Scanner scan = new Scanner(System.in);
         while (scan.hasNextLine()) {
