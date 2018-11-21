@@ -1,37 +1,28 @@
-/**.
- * { item_description }
- */
 import java.util.Scanner;
-/**.
- * Class for solution.
+/**
+ * class for sloution.
  */
-public final class Solution {
-    /**.
-        * Constructs the object.
-        */
+final class Solution {
+    /**
+     * Constructs the object.
+     */
     private Solution() {
-        /**.
-         * { item_description }
-         */
+        //unsed.
     }
-    /**.
-     * { function_description }
-     * the time complexity is N as it iterates through N times.
+    /**
+     * main.
+     *
      * @param      args  The arguments
      */
     public static void main(final String[] args) {
         Scanner sc = new Scanner(System.in);
-        int num = sc.nextInt();
-        sc.nextLine();
-        String[] rollnum = new String[num];
-        for (int i = 0; i < num; i++) {
-            String line = sc.nextLine();
-            rollnum[i] = line;
+        int n = Integer.parseInt(sc.nextLine());
+        String[] strings = new String[n];
+        for (int i = 0; i < n; i++) {
+            strings[i] = sc.nextLine();
         }
-        Quick3string q3str = new Quick3string();
-        q3str.sort(rollnum);
-        System.out.println(q3str.display(rollnum));
+        Lsd lsd = new Lsd();
+        // it take O(WN) time to sort.
+        lsd.sort(strings, strings[0].length());
     }
 }
-
-
