@@ -1,31 +1,45 @@
+/**.
+ * { item_description }
+ */
 import java.util.Scanner;
-class Solution {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		String synsetsfile = sc.nextLine();
-		String hypernymsfile = sc.nextLine();
-		String mode =sc.nextLine();
-		try {
-			if (mode.equals("Graph")) {
-				WordNet wordnet = new WordNet(synsetsfile, hypernymsfile);
-				wordnet.print();
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		try {
-			if (mode.equals("Queries")) {
-				WordNet wordnet = new WordNet(synsetsfile, hypernymsfile);
-				while (sc.hasNextLine()) {
-					String[] input = sc.nextLine().split(" ");
-					if(input[0].equals("null")) {
-						throw new IllegalArgumentException("IllegalArgumentException");
-					}
-					System.out.println("distance = " + wordnet.distance(input[0], input[1]) + ", ancestor = " + wordnet.sap(input[0], input[1]));
-				}
-			}
-		} catch (Exception e) {
-		                System.out.println(e.getMessage());
-	    }
-	}
+/**.
+ * { item_description }
+ */
+public final class Solution {
+    /**.
+     * Constructs the object.
+     */
+    private Solution() {
+        /**.
+         * { item_description }
+         */
+    }
+    /**.
+     * { function_description }
+     *
+     * @param      args  The arguments
+     */
+    // time complexity for the main method is 1.
+    public static void main(final String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String n = "Files" + "\\" + sc.nextLine();
+        String m = "Files" + "\\" + sc.nextLine();
+        String word = sc.nextLine();
+        try {
+            WordNet wn = new WordNet(n, m);
+            if (word.equals("Graph")) {
+                wn.display();
+            } else if (word.equals("Queries")) {
+                while (sc.hasNextLine()) {
+                    String[] tokens = sc.nextLine().split(" ");
+                    String str = wn.sap(tokens[0], tokens[1]);
+                    int id = wn.distance(tokens[0], tokens[1]);
+                    System.out.println("distance = " + id
+                        + ", ancestor = " + str);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("IllegalArgumentException");
+        }
+    }
 }
