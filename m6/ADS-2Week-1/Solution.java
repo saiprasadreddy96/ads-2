@@ -1,234 +1,299 @@
+import java.util.Scanner;
 import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
+// import java.math.BigDecimal;
+// import java.math.MathContext;
+import java.io.File;
+import java.io.IOException;
 /**
  * Class for page rank.
  */
 class PageRank {
-    /**
-     * { Digraph object }.
-     */
-    private Digraph pggraph;
-    /**
-     * { Arrays to store previous values }.
-     */
-    private double[] prval;
-    /**
-     * { Arrays to store current values }.
-     */
-    private double[] nowval;
-    /**
-     * Constructs the object.
-     *
-     * @param      graph  The graph
-     */
-    PageRank(final Digraph graph) {
-        this.pggraph = graph;
-        prval = new double[pggraph.V()];
-        for (int y = 0; y < prval.length; y++) {
-            prval[y] = (1.0 / (pggraph.V()));
-        }
-        for (int z = 0; z < pggraph.V(); z++) {
-            if (pggraph.outdegree(z) == 0) {
-                for (int b = 0; b < pggraph.V(); b++) {
-                    if (b != z) {
-                        pggraph.addEdge(z, b);
-                    }
-                }
-            }
-        }
-        nowval = new double[pggraph.V()];
-        updatingprvals();
+  /**
+   * the digraph.
+   */
+  private Digraph graph;
+  /**
+   * PageRank array.
+   */
+  // private BigDecimal[] pr;
+  private double[] pr;
+
+  /**
+   * imcoming vertices.
+   */
+  private Bag<Integer>[] incomVr;
+
+  /**
+   * Constructs the object.
+   * BigDecimal change - 37.
+   * @param      graph1  The graph
+   */
+  PageRank(final Digraph graph1) {
+    this.graph = graph1;
+    // pr = new BigDecimal[graph1.vertices()];
+    pr = new double[graph1.vertices()];
+    for (int i = 0; i < graph.vertices(); i++) {
+      // int temp = graph.vertices();
+      // pr[i] = BigDecimal.valueOf(1.0 / graph.vertices());
+      pr[i] = 1.0 / graph.vertices();
     }
-    /**
-     * { updatingprvals }.
-     */
-    void updatingprvals() {
-        final int thou = 1001;
-        for (int i = 1; i < thou; i++) {
-            // System.out.println("iteration number - " + i);
-            for (int j = 0; j < pggraph.V(); j++) {
-                update(j);
-            }
-            prval = Arrays.copyOf(nowval, nowval.length);
-            // if(Arrays.equals(prval, nowval)) {
-            //      break;
-            // }
+    for (int i = 0; i < graph.vertices(); i++) {
+      if (graph.outdegree(i) == 0) {
+        for (int j = 0; j < graph.vertices(); j++) {
+          if (j != i) {
+            graph.addEdge(i, j);
+          }
         }
+      }
     }
-    /**
-     * Gets the pr.
-     *
-     * @param      v     { parameter_description }
-     *
-     * @return     The pr.
-     */
-    double getPR(final int v) {
-        return nowval[v];
+    // System.out.println(Arrays.toString(pr));
+    // System.out.println(graph.vertices());
+    // incomVr = getAdjRev();
+    incomVr = graph.reverse().getAdj();
+    getPR();
+  }
+
+  /**
+   * Gets the adj reverse.
+   *
+   * Complexity : O(V)
+   *
+   * @return     The adj reverse.
+   */
+  public ArrayList<Integer>[] getAdjRev() {
+    ArrayList<Integer>[] adjRev = new ArrayList[graph.vertices()];
+
+    for (int v = 0; v < graph.vertices(); v++) {
+      adjRev[v] = new ArrayList<Integer>();
     }
-    /**
-     * { update function }.
-     *
-     * @param      v     { parameter_description }
-     *
-     * @return     { description_of_the_return_value }
-     */
-    double update(final int v) {
-        double testprval = 0.0;
-        if (pggraph.indegree(v) == 0) {
-            nowval[v] = 0.0;
-            return nowval[v];
+
+    // System.out.println(Arrays.toString(adjRev));
+    Bag<Integer>[] adjGr = graph.getAdj();
+    for (int i = 0; i < graph.vertices(); i++) {
+      for (Integer num : adjGr[i]) {
+        // System.out.println(num);
+        adjRev[num].add(i);
+      }
+    }
+    return adjRev;
+  }
+
+  /**
+   * Gets the pr.
+   *
+   * Complexity:  O(V).
+   */
+  public void getPR() {
+    final int iter = 1000;
+    // boolean flag = false;
+    for (int it = 0; it < iter; it++) {
+      double[] tempPR = new double[graph.vertices()];
+      for (int i = 0; i < graph.vertices(); i++) {
+        for (Integer ver : incomVr[i]) {
+          double temp = (double) pr[ver] / graph.outdegree(ver) * 1.0;
+          tempPR[i] += temp;
         }
-        for (Integer eachadj : pggraph.reverse().adj(v)) {
-            testprval = testprval + (
-                            prval[eachadj] / pggraph.outdegree(
-                                eachadj));
-        }
-        // System.out.println(testprval);
-        nowval[v] = testprval;
-        return nowval[v];
+
+      // BigDecimal[] tempPR = new BigDecimal[graph.vertices()];
+      // Arrays.fill(tempPR, BigDecimal.ZERO);
+      // for (int i = 0; i < graph.vertices(); i++) {
+      //   for (Integer ver : incomVr[i]) {
+      //     BigDecimal temp = pr[ver].divide(BigDecimal.valueOf(
+      //                                        graph.outdegree(ver) * 1.0),
+      //                                      MathContext.DECIMAL64);
+      //     // System.out.println(tempPR[i]);
+      //     tempPR[i] = tempPR[i].add(temp, MathContext.DECIMAL64);
+      //   }
+
+      }
+      // System.out.println(it);
+      if (Arrays.equals(pr, tempPR)) {
+        // System.out.println(it);
+        break;
+      }
+      // System.out.println(it);
+      // System.out.println(Arrays.toString(tempPR));
+      // System.out.println(Arrays.toString(pr));
+      pr = tempPR.clone();
     }
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return     String representation of the object.
-     */
-    public String toString() {
-        String str = "";
-        for (int l = 0; l < nowval.length; l++) {
-            str = str + l + " - " + nowval[l] + "\n";
-        }
-        return str;
+  }
+
+  /**
+   * Gets the pr value.
+   *
+   *Complexity:  O(1).
+   *
+   * @param      vertex  The vertex
+   *
+   * @return     The pr value.
+   */
+  public /*BigDecimal*/ double getPRValue(final int vertex) {
+    return pr[vertex];
+  }
+
+
+
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return     String representation of the object.
+   */
+  public String toString() {
+    getPR();
+    String out = "";
+    for (int i = 0; i < pr.length; i++) {
+      out += i;
+      out += " - ";
+      out += pr[i];
+      out += "\n";
     }
+    return out.substring(0, out.length() - 1);
+  }
+
+  /**
+   * prints the data.
+   */
+  public void print() {
+    for (int i = 0; i < pr.length; i++) {
+      System.out.printf(i + " - ");
+      System.out.println(pr[i]);
+    }
+  }
 }
 /**
  * Class for web search.
  */
 class WebSearch {
-    /**
-     * { pgrankobject }.
-     */
-    private PageRank pgrankobjinclass;
-    /**
-     * { Hashtable }.
-     */
-    private Hashtable<String, Bag<Integer>> hashtableobj;
-    /**
-     * Constructs the object.
-     *
-     * @param      rankobj   The rankobj
-     * @param      filename  The filename
-     */
-    WebSearch(final PageRank rankobj, final String filename) {
-        pgrankobjinclass = rankobj;
-        In newfile = new In(filename);
-        hashtableobj = new Hashtable<>();
-        while (newfile.hasNextLine()) {
-            String eachline = newfile.readLine();
-            String[] tokens = eachline.split(":");
-            for (String word : tokens[1].split(" ")) {
-                if (hashtableobj.containsKey(word)) {
-                    Bag testbag = hashtableobj.get(word);
-                    testbag.add(Integer.parseInt(tokens[0]));
-                    hashtableobj.put(word, testbag);
-                } else {
-                    hashtableobj.put(word, new Bag<Integer>());
-                    Bag testbag = hashtableobj.get(word);
-                    testbag.add(Integer.parseInt(tokens[0]));
-                    hashtableobj.put(word, testbag);
-                }
-            }
+  /**
+   * the pagerank object.
+   */
+  private PageRank pgS;
+  /**
+   * hash map for the words in the content.
+   */
+  private HashMap<String, ArrayList<Integer>> webCont;
+  /**
+   * Constructs the object.
+   *
+   * @param      pg1       The page 1
+   * @param      filename  The filename
+   */
+  WebSearch(final PageRank pg1, final String filename) {
+    this.pgS = pg1;
+    try {
+      File file = new File(filename);
+      Scanner sc = new Scanner(file);
+      webCont = new HashMap<>();
+      while (sc.hasNextLine()) {
+        String[] temp = sc.nextLine().split(":");
+        for (String word : temp[1].split(" ")) {
+          webCont.putIfAbsent(word, new ArrayList<Integer>());
+          webCont.get(word).add(Integer.parseInt(temp[0]));
         }
+      }
+    } catch (IOException ioe) {
+      throw new IllegalArgumentException("Could not open");
     }
-    /**
-     * { iAmFeelinglucky function }.
-     *
-     * @param      inputword  The inputword
-     *
-     * @return     { description_of_the_return_value }
-     */
-    int iAmFeelingLucky(final String inputword) {
-        if (!hashtableobj.containsKey(inputword)) {
-            return -1;
-        }
-        Bag<Integer> testbag = hashtableobj.get(inputword);
-        Double maxpr = -1.0;
-        int maxid = -1;
-        for (Integer everyid : testbag) {
-            if (pgrankobjinclass.getPR(everyid) > maxpr) {
-                maxpr = pgrankobjinclass.getPR(everyid);
-                maxid = everyid;
-            }
-        }
-        return maxid;
-    }
-    /**
-     * { printingkeys }.
-     */
-    void printkeys() {
-        for (String eachkey : hashtableobj.keySet()) {
-            System.out.println(eachkey);
-        }
-    }
+  }
 
+  /**
+   * returns the webpage with the best page rank.
+   *
+   * Complexity:  O(V).
+   *
+   * @param      query  The query
+   *
+   * @return     the webpage.
+   */
+  public int iAmFeelingLucky(final String query) {
+    if (webCont.containsKey(query)) {
+      // BigDecimal max = BigDecimal.ZERO;
+      double max = 0.0;
+      int mpage = 0;
+      for (Integer page : webCont.get(query)) {
+        // BigDecimal temp = pgS.getPRValue(page);
+        double temp = pgS.getPRValue(page);
+        // if (temp.compareTo(max) >= 0) {
+        if (temp >= max) {
+          max = temp;
+          mpage = page;
+        }
+      }
+      return mpage;
+    } else {
+      return -1;
+    }
+  }
 }
+
 /**
  * Class for solution.
  */
-final class Solution {
-    /**
-     * Constructs the object.
-     */
-    private Solution() {
-        //unused.
+public final class Solution {
+  /**
+   * Constructs the object.
+   */
+  private Solution() {
+    // unused
+  }
+  /**
+   * Main method.
+   *
+   * @param      args  The arguments
+   */
+  public static void main(final String[] args) {
+
+    // read the first line of the input to get the number of vertices
+    // iterate count of vertices times
+    // to read the adjacency list from std input
+    // and build the graph
+
+    Scanner scan = new Scanner(System.in);
+
+    int numV = Integer.parseInt(scan.nextLine());
+
+    Digraph di = new Digraph(numV);
+
+    for (int i = 0; i < numV; i++) {
+      String[] inps = scan.nextLine().split(" ");
+      int ver = Integer.parseInt(inps[0]);
+      for (int j = 1; j < inps.length; j++) {
+        di.addEdge(ver, Integer.parseInt(inps[j]));
+      }
     }
-    /**
-     * { Main function }.
-     *
-     * @param      args  The arguments
-     */
-    public static void main(final String[] args) {
-        // read the first line of the input to get the number of vertices
 
-        int vertexnum = Integer.parseInt(StdIn.readLine());
-        // iterate count of vertices times
+    System.out.println(di);
 
-        // to read the adjacency list from std input
-        // and build the graph
-        Digraph graph = new Digraph(vertexnum);
-        for (int i = 0; i < vertexnum; i++) {
-            String[] edges = StdIn.readLine().split(" ");
-            for (int k = 1; k < edges.length; k++) {
-                graph.addEdge(
-                    Integer.parseInt(
-                        edges[0]), Integer.parseInt(
-                        edges[k]));
-            }
-        }
-        System.out.println(graph);
-        // Create page rank object and pass the graph object to the constructor
+    // Create page rank object and pass the graph object to the constructor
 
-        PageRank pgrankobj = new PageRank(graph);
-        // print the page rank object
-        System.out.println(pgrankobj);
-        // This part is only for the final test case
+    PageRank pg = new PageRank(di);
 
-        // File path to the web content
-        String file = "WebContent.txt";
+    // print the page rank object
 
+    // System.out.println(pg);
+    pg.print();
+    // System.out.println(Arrays.toString(pg.getAdjRev()));
 
-        // instantiate web search object
-        // and pass the page rank object and the file path to the constructor
+    // This part is only for the final test case
 
-        WebSearch webobj = new WebSearch(pgrankobj, file);
+    // File path to the web content
+    String file = "WebContent.txt";
 
-        while (StdIn.hasNextLine()) {
-            String[] queries = StdIn.readLine().split("=");
-            System.out.println(webobj.iAmFeelingLucky(queries[1]));
-        }
-        // read the search queries from std in
-        // remove the q= prefix and extract the search word
-        // pass the word to iAmFeelingLucky method of web search
-        // print the return value of iAmFeelingLucky
+    // instantiate web search object
+    // and pass the page rank object and the file path to the constructor
+    WebSearch ws = new WebSearch(pg, file);
 
+    // read the search queries from std in
+    // remove the q= prefix and extract the search word
+    // pass the word to iAmFeelingLucky method of web search
+    // print the return value of iAmFeelingLucky
+
+    while (scan.hasNext()) {
+      String qr = scan.nextLine();
+      String qrMod = qr.substring(2, qr.length());
+      System.out.println(ws.iAmFeelingLucky(qrMod));
     }
+  }
 }
