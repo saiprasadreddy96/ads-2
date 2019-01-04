@@ -1,0 +1,22 @@
+warning: LF will be replaced by CRLF in m16/boggle/BoggleSolver.java.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in m16/boggle/Solution.java.
+The file will have its original line endings in your working directory.
+[master eb08fc6] "ads2_m16_a1_1: 30/30 testcases passed. Cannot run hidden testcases as Server is unreachablecheck_style score: 1/1 "
+ 14 files changed, 562 insertions(+), 317 deletions(-)
+ rewrite m16/boggle/BoggleSolver.class (99%)
+ rewrite m16/boggle/BoggleSolver.java (95%)
+ create mode 100644 m16/boggle/Queue$1.class
+ create mode 100644 m16/boggle/Queue$ListIterator.class
+ create mode 100644 m16/boggle/Queue$Node.class
+ create mode 100644 m16/boggle/Queue.class
+ rewrite m16/boggle/Solution.class (75%)
+ rewrite m16/boggle/Solution.java (97%)
+ create mode 100644 m16/boggle/TrieST$1.class
+ create mode 100644 m16/boggle/TrieST$Node.class
+ create mode 100644 m16/boggle/TrieST.class
+ create mode 100644 m16/boggle/TrieST.java
+ rewrite m16/boggle/check_style_errors.txt (99%)
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+To https://github.com/saiprasadreddy96/ads-2
+   74e44b9..eb08fc6  master -> master
